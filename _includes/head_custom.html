@@ -44,6 +44,13 @@
     var headings = content.querySelectorAll('h2, h3');
     if (headings.length < 2) return;
 
+    // IDがない見出し（日本語のみの場合など）に自動でIDを付与
+    headings.forEach(function (h, i) {
+      if (!h.id) {
+        h.id = 'heading-' + i;
+      }
+    });
+
     var toc = document.createElement('div');
     toc.className = 'toc-right';
 
