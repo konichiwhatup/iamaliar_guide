@@ -1,0 +1,76 @@
+<style>
+  .toc-right {
+    position: fixed;
+    right: 1.5rem;
+    top: 5rem;
+    width: 180px;
+    font-size: 0.75rem;
+  }
+  .toc-right-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666;
+    margin-bottom: 0.6rem;
+  }
+  .toc-right a {
+    display: block;
+    padding: 0.2rem 0 0.2rem 0.6rem;
+    color: #888;
+    text-decoration: none;
+    border-left: 2px solid #333;
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
+  }
+  .toc-right a.h3 {
+    padding-left: 1.2rem;
+    font-size: 0.7rem;
+  }
+  .toc-right a:hover,
+  .toc-right a.active {
+    color: #e8e6e1;
+    border-left-color: #7c7c7c;
+  }
+  @media (max-width: 1400px) {
+    .toc-right { display: none; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var content = document.querySelector('.main-content');
+    if (!content) return;
+
+    var headings = content.querySelectorAll('h2, h3');
+    if (headings.length < 2) return;
+
+    var toc = document.createElement('div');
+    toc.className = 'toc-right';
+
+    var title = document.createElement('div');
+    title.className = 'toc-right-title';
+    title.textContent = 'このページの内容';
+    toc.appendChild(title);
+
+    headings.forEach(function (h) {
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.replace(/¶/g, '').trim();
+      if (h.tagName === 'H3') a.classList.add('h3');
+      toc.appendChild(a);
+    });
+
+    document.body.appendChild(toc);
+
+    var links = toc.querySelectorAll('a');
+    window.addEventListener('scroll', function () {
+      var current = '';
+      headings.forEach(function (h) {
+        if (window.scrollY >= h.offsetTop - 120) current = h.id;
+      });
+      links.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  });
+</script>
