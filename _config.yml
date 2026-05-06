@@ -1,0 +1,19 @@
+title: "I AM A LIAR — 運用ドキュメント"
+description: "iamaliar.com の運用に必要な情報をまとめた説明書"
+theme: just-the-docs
+
+color_scheme: dark
+search_enabled: true
+heading_anchors: true
+back_to_top: true
+back_to_top_text: "ページ上部へ"
+
+aux_links:
+  "iamaliar.com ↗":
+    - "https://iamaliar.com"
+aux_links_new_tab: true
+
+footer_content: "I AM A LIAR — <em>wear it or frame it.</em>"
+
+plugins:
+  - jekyll-seo-tag
