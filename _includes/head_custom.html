@@ -37,18 +37,16 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  function buildToc() {
     var content = document.querySelector('.main-content');
     if (!content) return;
 
     var headings = content.querySelectorAll('h2, h3');
     if (headings.length < 2) return;
 
-    // IDがない見出し（日本語のみの場合など）に自動でIDを付与
+    // IDがない見出しに付与（クリックで移動するためscrollIntoViewを使う）
     headings.forEach(function (h, i) {
-      if (!h.id) {
-        h.id = 'heading-' + i;
-      }
+      if (!h.id) h.id = 'heading-' + i;
     });
 
     var toc = document.createElement('div');
@@ -59,11 +57,18 @@
     title.textContent = 'このページの内容';
     toc.appendChild(title);
 
-    headings.forEach(function (h) {
+    headings.forEach(function (h, i) {
       var a = document.createElement('a');
       a.href = '#' + h.id;
-      a.textContent = h.textContent.replace(/¶/g, '').trim();
+      a.textContent = h.textContent.replace(/[¶#]/g, '').trim();
       if (h.tagName === 'H3') a.classList.add('h3');
+
+      // hrefが効かない場合の保険としてclickでスクロール
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
       toc.appendChild(a);
     });
 
@@ -79,5 +84,8 @@
         a.classList.toggle('active', a.getAttribute('href') === '#' + current);
       });
     });
-  });
+  }
+
+  // Just the Docs のスクリプトが走った後に実行
+  window.addEventListener('load', buildToc);
 </script>
