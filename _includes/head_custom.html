@@ -44,11 +44,9 @@
     var headings = content.querySelectorAll('h2, h3');
     if (headings.length < 2) return;
 
-    // IDがない見出し（日本語のみの場合など）に自動でIDを付与
+    // 全見出しにIDを強制設定（日本語のみ見出しでkramdownがID生成できない場合の対策）
     headings.forEach(function (h, i) {
-      if (!h.id) {
-        h.id = 'heading-' + i;
-      }
+      h.id = 'toc-' + i;
     });
 
     var toc = document.createElement('div');
