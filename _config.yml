@@ -13,7 +13,7 @@ aux_links:
     - "https://iamaliar.com"
 aux_links_new_tab: true
 
-footer_content: "I AM A LIAR — <em>wear it or frame it.</em>"
+footer_content: "I AM A LIAR — <em>Old, yet new — myself.</em>"
 
 plugins:
   - jekyll-seo-tag
