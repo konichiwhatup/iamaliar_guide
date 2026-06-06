@@ -68,7 +68,6 @@
   function buildToc() {
     if (document.querySelector('.toc-right')) return;
 
-    // just-the-docs のメインコンテンツ領域から見出しを取得
     var content = document.querySelector('#main-content, .main-content, [role="main"], main');
     var headings;
     if (content) {
