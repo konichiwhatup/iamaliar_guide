@@ -5,19 +5,10 @@ permalink: /sanity/
 ---
 
 # Sanity 使い方ガイド
-{: .no_toc }
 
 このドキュメントは、サイトのコンテンツ(商品・記事・ニュース・ヒーロー画像)を自分で更新するための手順書です。コードや技術的な知識は一切不要です。
 
 **管理画面URL:** [https://iamaliar.sanity.studio](https://iamaliar.sanity.studio)
-
----
-
-## 目次
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
 
 ---
 
