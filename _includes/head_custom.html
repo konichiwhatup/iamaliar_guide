@@ -50,6 +50,60 @@
   }
 </style>
 
+<!-- 日本語(CJK)対応 Lunr トークナイザー: lunr が window に代入された瞬間に差し替える -->
+<script>
+(function () {
+  var _lunr;
+  try {
+    Object.defineProperty(window, 'lunr', {
+      configurable: true, enumerable: true,
+      get: function () { return _lunr; },
+      set: function (v) {
+        _lunr = v;
+        if (v && v.Token) {
+          var orig = v.tokenizer;
+          v.tokenizer = (function (orig) {
+            return function (obj, meta) {
+              if (obj == null) return [];
+              if (Array.isArray(obj)) {
+                return obj.reduce(function (m, t) { return m.concat(v.tokenizer(t)); }, []);
+              }
+              var s = obj.toString().toLowerCase();
+              var res = [], buf = '';
+              function flushBuf() {
+                if (!buf) return;
+                res = res.concat(orig(buf, meta));
+                buf = '';
+              }
+              for (var i = 0; i < s.length; i++) {
+                var c = s[i], code = c.charCodeAt(0);
+                var cjk = (code >= 0x3000 && code <= 0x9fff) || (code >= 0xff00 && code <= 0xffef);
+                if (cjk) {
+                  flushBuf();
+                  res.push(new v.Token(c, {}));
+                  if (i + 1 < s.length) {
+                    var nc = s[i + 1].charCodeAt(0);
+                    if ((nc >= 0x3000 && nc <= 0x9fff) || (nc >= 0xff00 && nc <= 0xffef)) {
+                      res.push(new v.Token(c + s[i + 1], {}));
+                    }
+                  }
+                } else {
+                  buf += c;
+                }
+              }
+              flushBuf();
+              return res;
+            };
+          })(orig);
+          v.tokenizer.separator = orig.separator;
+        }
+        Object.defineProperty(window, 'lunr', { configurable: true, writable: true, enumerable: true, value: v });
+      }
+    });
+  } catch (e) { /* graceful degradation */ }
+})();
+</script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var content = document.querySelector('.main-content')
