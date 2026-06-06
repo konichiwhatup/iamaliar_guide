@@ -62,6 +62,33 @@
   }
 </style>
 
+<script>
+(function () {
+  if (typeof lunr === 'undefined') return;
+  var isCJK = function (s) { return /[　-鿿･-ﾟ]/.test(s); };
+  var origTokenizer = lunr.tokenizer;
+  var origTrimmer = lunr.trimmer;
+  lunr.tokenizer = function (obj, metadata) {
+    var tokens = origTokenizer.call(this, obj, metadata);
+    var extra = [];
+    tokens.forEach(function (t) {
+      var s = t.toString();
+      if (isCJK(s) && s.length > 1) {
+        for (var i = 0; i + 1 < s.length; i++) {
+          extra.push(new lunr.Token(s.slice(i, i + 2), {}));
+        }
+      }
+    });
+    return tokens.concat(extra);
+  };
+  lunr.tokenizer.separator = origTokenizer.separator;
+  lunr.trimmer = function (token) {
+    return isCJK(token.toString()) ? token : origTrimmer(token);
+  };
+  lunr.Pipeline.registerFunction(lunr.trimmer, 'trimmer');
+}());
+</script>
+
 <!-- 右側TOC生成スクリプト -->
 <script>
 (function () {
