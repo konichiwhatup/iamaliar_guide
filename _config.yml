@@ -9,7 +9,6 @@ search:
   previews: 5
   preview_words_before: 5
   preview_words_after: 15
-  rel_url: true
 heading_anchors: true
 back_to_top: true
 back_to_top_text: "ページ上部へ"
